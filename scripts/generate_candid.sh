@@ -1,0 +1,2 @@
+
+cargo build --release --target wasm32-unknown-unknown --package basic_bitcoin && target/wasm32-unknown-unknown/release/basic_bitcoin.wasm && candid-extractor target/wasm32-unknown-unknown/release/basic_bitcoin.wasm > src/basic_bitcoin/basic_bitcoin2.did

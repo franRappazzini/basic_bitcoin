@@ -1,0 +1,29 @@
+type BitcoinNetwork = variant { mainnet; regtest; testnet };
+type GetBlockHeadersResponse = record {
+  tip_height : nat32;
+  block_headers : vec blob;
+};
+type GetUtxosResponse = record {
+  next_page : opt blob;
+  tip_height : nat32;
+  tip_block_hash : blob;
+  utxos : vec Utxo;
+};
+type Outpoint = record { txid : blob; vout : nat32 };
+type SendRequest = record {
+  destination_address : text;
+  amount_in_satoshi : nat64;
+};
+type Utxo = record { height : nat32; value : nat64; outpoint : Outpoint };
+service : (BitcoinNetwork) -> {
+  get_balance : (text) -> (nat64);
+  get_block_headers : (nat32, opt nat32) -> (GetBlockHeadersResponse);
+  get_current_fee_percentiles : () -> (vec nat64);
+  get_p2pkh_address : () -> (text);
+  get_p2tr_raw_key_spend_address : () -> (text);
+  get_p2tr_script_spend_address : () -> (text);
+  get_utxos : (text) -> (GetUtxosResponse);
+  send_from_p2pkh : (SendRequest) -> (text);
+  send_from_p2tr_raw_key_spend : (SendRequest) -> (text);
+  send_from_p2tr_script_spend : (SendRequest) -> (text);
+}
