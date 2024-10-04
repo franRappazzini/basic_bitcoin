@@ -94,7 +94,17 @@ pub async fn get_current_fee_percentiles() -> Vec<MillisatoshiPerByte> {
 pub async fn get_p2pkh_address() -> String {
     let derivation_path = DERIVATION_PATH.with(|d| d.clone());
     let key_name = KEY_NAME.with(|kn| kn.borrow().to_string());
-    let network = NETWORK.with(|n| n.get());
+    let network = NETWORK.with(|n: &Cell<BitcoinNetwork>| n.get());
+    bitcoin_wallet::p2pkh::get_address(network, key_name, derivation_path).await
+}
+
+#[update]
+pub async fn get_p2pkh_address_caller() -> String {
+    // let mut derivation_path = DERIVATION_PATH.with(|d| d.clone());
+    // derivation_path.push(ic_cdk::caller().as_slice().to_vec());
+    let derivation_path = vec![ic_cdk::caller().as_slice().to_vec()];
+    let key_name = KEY_NAME.with(|kn| kn.borrow().to_string());
+    let network = NETWORK.with(|n: &Cell<BitcoinNetwork>| n.get());
     bitcoin_wallet::p2pkh::get_address(network, key_name, derivation_path).await
 }
 

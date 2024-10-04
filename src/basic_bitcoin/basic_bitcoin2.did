@@ -20,6 +20,7 @@ service : (BitcoinNetwork) -> {
   get_block_headers : (nat32, opt nat32) -> (GetBlockHeadersResponse);
   get_current_fee_percentiles : () -> (vec nat64);
   get_p2pkh_address : () -> (text);
+  get_p2pkh_address_caller : () -> (text);
   get_p2tr_raw_key_spend_address : () -> (text);
   get_p2tr_script_spend_address : () -> (text);
   get_utxos : (text) -> (GetUtxosResponse);
